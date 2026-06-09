@@ -2,19 +2,28 @@
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 
+// Configuración de Eloquent
+
 $capsule = new Capsule();
 
 $capsule->addConnection([
     'driver'    => 'mysql',
-    'host'      => $_ENV['DB_HOST'],
-    'port'      => $_ENV['DB_PORT'],
-    'database'  => $_ENV['DB_DATABASE'],
-    'username'  => $_ENV['DB_USERNAME'],
-    'password'  => $_ENV['DB_PASSWORD'],
-    'charset'   => 'utf8',
-    'collation' => 'utf8_unicode_ci',
+    'host'      => 'localhost',
+    'port'      => 3306,
+    'database'  => 'bd_auth',
+    'username'  => 'root',
+    'password'  => '',
+    'charset'   => 'utf8mb4',
+    'collation' => 'utf8mb4_unicode_ci',
     'prefix'    => ''
 ]);
 
+
+//Hace disponible la conexión globalmente
+
 $capsule->setAsGlobal();
+
+
+// Inicializa Eloquent ORM
+
 $capsule->bootEloquent();
