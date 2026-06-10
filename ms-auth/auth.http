@@ -1,0 +1,101 @@
+##################################################
+# MICROSERVICIO: ms-auth
+##################################################
+
+@baseUrl = http://localhost:8000
+
+##################################################
+# VERIFICAR QUE EL MICROSERVICIO ESTÁ FUNCIONANDO
+##################################################
+
+GET {{baseUrl}}/
+
+###
+
+##################################################
+# LOGIN
+##################################################
+
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+    "usuario": "admin",
+    "contrasena": "admin123"
+}
+
+###
+
+##################################################
+# VALIDAR TOKEN
+##################################################
+
+GET {{baseUrl}}/validate
+Authorization: PEGA_AQUI_EL_TOKEN
+
+###
+
+##################################################
+# LOGOUT
+##################################################
+
+POST {{baseUrl}}/logout
+Authorization: PEGA_AQUI_EL_TOKEN
+
+###
+
+##################################################
+# LISTAR TODOS LOS USUARIOS
+##################################################
+
+GET {{baseUrl}}/usuarios
+Authorization: PEGA_AQUI_EL_TOKEN
+
+###
+
+##################################################
+# OBTENER USUARIO POR ID
+##################################################
+
+GET {{baseUrl}}/usuarios/1
+Authorization: PEGA_AQUI_EL_TOKEN
+
+###
+
+##################################################
+# CREAR USUARIO
+##################################################
+
+POST {{baseUrl}}/usuarios
+Content-Type: application/json
+Authorization: PEGA_AQUI_EL_TOKEN
+
+{
+    "nombre": "Juan Pérez",
+    "usuario": "juan",
+    "contrasena": "123456"
+}
+
+###
+
+##################################################
+# ACTUALIZAR USUARIO
+##################################################
+
+PUT {{baseUrl}}/usuarios/1
+Content-Type: application/json
+Authorization: PEGA_AQUI_EL_TOKEN
+
+{
+    "nombre": "Juan Pérez Actualizado",
+    "usuario": "juan_actualizado"
+}
+
+###
+
+##################################################
+# DESACTIVAR USUARIO
+##################################################
+
+DELETE {{baseUrl}}/usuarios/1
+Authorization: PEGA_AQUI_EL_TOKEN
