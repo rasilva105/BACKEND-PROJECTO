@@ -1,0 +1,93 @@
+##################################################
+# MICROSERVICIO: ms-incapacidades
+##################################################
+
+@baseUrl = http://localhost:8002
+@token = PEGAR_TOKEN_AQUI
+
+##################################################
+# LISTAR INCAPACIDADES
+##################################################
+
+GET {{baseUrl}}/incapacidades
+Authorization: {{token}}
+
+###
+
+##################################################
+# OBTENER INCAPACIDAD POR ID
+##################################################
+
+GET {{baseUrl}}/incapacidades/1
+Authorization: {{token}}
+
+###
+
+##################################################
+# CREAR INCAPACIDAD
+##################################################
+
+POST {{baseUrl}}/incapacidades
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+    "empleado_id": 1,
+    "fecha_inicio": "2026-06-11",
+    "fecha_fin": "2026-06-15",
+    "tipo": "Enfermedad General",
+    "diagnostico_general": "Gripe",
+    "entidad_medica": "EPS Sura",
+    "observaciones": "Reposo absoluto",
+    "estado": "activa"
+}
+
+###
+
+##################################################
+# ACTUALIZAR INCAPACIDAD
+##################################################
+
+PUT {{baseUrl}}/incapacidades/1
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+    "observaciones": "Reposo absoluto y control médico"
+}
+
+###
+
+##################################################
+# FINALIZAR INCAPACIDAD
+##################################################
+
+DELETE {{baseUrl}}/incapacidades/1
+Authorization: {{token}}
+
+###
+
+##################################################
+# BUSCAR INCAPACIDADES POR EMPLEADO
+##################################################
+
+GET {{baseUrl}}/incapacidades/empleado/1
+Authorization: {{token}}
+
+###
+
+##################################################
+# BUSCAR INCAPACIDADES POR ESTADO
+##################################################
+
+GET {{baseUrl}}/incapacidades/estado/activa
+Authorization: {{token}}
+
+###
+
+##################################################
+# BUSCAR INCAPACIDADES POR TIPO
+##################################################
+
+GET {{baseUrl}}/incapacidades/tipo/Enfermedad%20General
+Authorization: {{token}}
