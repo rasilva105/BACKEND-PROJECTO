@@ -1,11 +1,8 @@
 <?php
-
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 // Configuración de Eloquent
-
 $capsule = new Capsule();
-
 $capsule->addConnection([
     'driver'    => 'mysql',
     'host'      => 'localhost',
@@ -18,12 +15,8 @@ $capsule->addConnection([
     'prefix'    => ''
 ]);
 
-
 //Hace disponible la conexión globalmente
-
 $capsule->setAsGlobal();
 
-
 // Inicializa Eloquent ORM
-
 $capsule->bootEloquent();

@@ -2,7 +2,7 @@
     "name": "usuario/ms-auth",
     "autoload": {
         "psr-4": {
-            "Usuario\\MsAuth\\": "src/"
+            "App\\": "app/"
         }
     },
     "require": {

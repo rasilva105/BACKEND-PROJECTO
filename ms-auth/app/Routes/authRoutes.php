@@ -1,15 +1,13 @@
 <?php
 
 use Slim\App;
-use Auth\Controllers\AuthController;
+use App\Controllers\AuthController;
 
 return function (App $app) {
 
-    //   Instancia del controlador
-
     $controller = new AuthController();
 
-    //AUTENTICACIÓN
+    // AUTENTICACIÓN
 
     // Iniciar sesión
     $app->post('/login', [$controller, 'login']);
@@ -19,7 +17,6 @@ return function (App $app) {
 
     // Validar token
     $app->get('/validate', [$controller, 'validate']);
-
 
     // GESTIÓN DE USUARIOS
 

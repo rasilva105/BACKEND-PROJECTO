@@ -1,8 +1,7 @@
 <?php
 
-namespace Auth\Middleware;
-
-use Auth\Models\Usuario;
+namespace App\Middleware;
+use App\Models\Usuario;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as Handler;

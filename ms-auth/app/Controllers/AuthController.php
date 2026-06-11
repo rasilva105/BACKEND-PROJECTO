@@ -1,8 +1,7 @@
 <?php
 
-namespace Auth\Controllers;
-
-use Auth\Models\Usuario;
+namespace App\Controllers;
+use App\Models\Usuario;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 

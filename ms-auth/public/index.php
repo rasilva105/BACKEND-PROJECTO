@@ -5,9 +5,10 @@ ini_set('display_errors', 1);
 
 // Cargar Composer
 require __DIR__ . '/../vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
 
 // Configurar Eloquent
-
 require __DIR__ . '/../app/Config/database.php';
 
 use Slim\Factory\AppFactory;
