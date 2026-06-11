@@ -1,0 +1,78 @@
+##################################################
+# MICROSERVICIO: ms-empleados
+# URL BASE
+##################################################
+
+@baseUrl = http://localhost:8001
+
+##################################################
+# PROBAR MICROSERVICIO
+##################################################
+
+GET {{baseUrl}}/
+
+###
+
+##################################################
+# LISTAR EMPLEADOS
+##################################################
+
+GET {{baseUrl}}/empleados
+Authorization: prueba
+
+###
+
+##################################################
+# OBTENER EMPLEADO POR ID
+##################################################
+
+GET {{baseUrl}}/empleados/1
+Authorization: prueba
+
+###
+
+##################################################
+# CREAR EMPLEADO
+##################################################
+
+POST {{baseUrl}}/empleados
+Content-Type: application/json
+Authorization: prueba
+
+{
+    "nombres": "Laura",
+    "apellidos": "Gomez",
+    "documento": "1000998877",
+    "correo": "laura@empresa.com",
+    "telefono": "3009998877",
+    "cargo": "Contadora",
+    "area": "Finanzas",
+    "fecha_ingreso": "2026-06-10",
+    "estado": "activo"
+}
+
+###
+
+##################################################
+# ACTUALIZAR EMPLEADO
+##################################################
+
+PUT http://localhost:8001/empleados/3
+Content-Type: application/json
+Authorization: prueba
+
+{
+    "cargo": "Jefe de Finanzas",
+    "telefono": "3001112233"
+}
+
+###
+
+##################################################
+# ELIMINAR EMPLEADO
+##################################################
+
+DELETE {{baseUrl}}/empleados/1
+Authorization: prueba
+
+###
