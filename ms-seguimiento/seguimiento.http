@@ -5,7 +5,7 @@ Authorization: Bearer TU_TOKEN
 ###
 
 ### Obtener por ID
-GET http://localhost:8003/seguimientos/1
+GET http://localhost:8003/seguimientos/2
 Authorization: Bearer TU_TOKEN
 
 ###
