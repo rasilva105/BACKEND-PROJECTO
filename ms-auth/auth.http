@@ -57,7 +57,7 @@ Authorization: PEGA_AQUI_EL_TOKEN
 # OBTENER USUARIO POR ID
 ##################################################
 
-GET {{baseUrl}}/usuarios/1
+GET {{baseUrl}}/usuarios/2
 Authorization: PEGA_AQUI_EL_TOKEN
 
 ###
@@ -71,9 +71,9 @@ Content-Type: application/json
 Authorization: PEGA_AQUI_EL_TOKEN
 
 {
-    "nombre": "Juan Pérez",
-    "usuario": "juan",
-    "contrasena": "123456"
+    "nombre": "Raphael Silva",
+    "usuario": "raphael",
+    "contrasena": "01072007"
 }
 
 ###
@@ -87,7 +87,7 @@ Content-Type: application/json
 Authorization: PEGA_AQUI_EL_TOKEN
 
 {
-    "nombre": "Juan Pérez Actualizado",
+    "nombre": "Juan Perez Actualizado",
     "usuario": "juan_actualizado"
 }
 
