@@ -26,7 +26,7 @@ Authorization: prueba
 # OBTENER EMPLEADO POR ID
 ##################################################
 
-GET {{baseUrl}}/empleados/1
+GET {{baseUrl}}/empleados/2
 Authorization: prueba
 
 ###
@@ -40,14 +40,14 @@ Content-Type: application/json
 Authorization: prueba
 
 {
-    "nombres": "Laura",
-    "apellidos": "Gomez",
-    "documento": "1000998877",
-    "correo": "laura@empresa.com",
-    "telefono": "3009998877",
-    "cargo": "Contadora",
+    "nombres": "Raphael",
+    "apellidos": "Silva",
+    "documento": "1097496558",
+    "correo": "raphael@empresa.com",
+    "telefono": "3107361152",
+    "cargo": "Gerente",
     "area": "Finanzas",
-    "fecha_ingreso": "2026-06-10",
+    "fecha_ingreso": "2026-06-12",
     "estado": "activo"
 }
 
@@ -57,7 +57,7 @@ Authorization: prueba
 # ACTUALIZAR EMPLEADO
 ##################################################
 
-PUT http://localhost:8001/empleados/3
+PUT http://localhost:8001/empleados/6
 Content-Type: application/json
 Authorization: prueba
 
@@ -72,7 +72,7 @@ Authorization: prueba
 # ELIMINAR EMPLEADO
 ##################################################
 
-DELETE {{baseUrl}}/empleados/1
+DELETE {{baseUrl}}/empleados/6
 Authorization: prueba
 
 ###

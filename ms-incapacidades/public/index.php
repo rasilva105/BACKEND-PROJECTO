@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Slim\Factory\AppFactory;
 use Dotenv\Dotenv;
 
-require __DIR__ . '/../../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 /*
  Cargar variables de entorno

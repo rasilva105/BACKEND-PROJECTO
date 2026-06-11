@@ -1,0 +1,21 @@
+{
+    "name": "usuario/ms-incapacidades",
+    "autoload": {
+        "psr-4": {
+            "Usuario\\MsIncapacidades\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "rasilva105",
+            "email": "rssilva@uniboyaca.edu.co"
+        }
+    ],
+    "require": {
+        "slim/slim": "4.*",
+        "slim/psr7": "^1.8",
+        "illuminate/database": "^12.62",
+        "vlucas/phpdotenv": "^5.6",
+        "firebase/php-jwt": "^7.1"
+    }
+}
