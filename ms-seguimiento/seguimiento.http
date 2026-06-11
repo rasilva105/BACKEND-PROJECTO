@@ -1,0 +1,43 @@
+### Obtener todos
+GET http://localhost:8003/seguimientos
+Authorization: Bearer TU_TOKEN
+
+###
+
+### Obtener por ID
+GET http://localhost:8003/seguimientos/1
+Authorization: Bearer TU_TOKEN
+
+###
+
+### Registrar seguimiento
+POST http://localhost:8003/seguimientos
+Content-Type: application/json
+Authorization: Bearer TU_TOKEN
+
+{
+    "incapacidad_id": 1,
+    "fecha_seguimiento": "2026-06-11",
+    "observaciones": "Paciente estable y en recuperación.",
+    "recomendaciones": "Continuar tratamiento.",
+    "proxima_revision": "2026-06-18",
+    "estado": "en_proceso"
+}
+
+###
+
+### Actualizar seguimiento
+PUT http://localhost:8003/seguimientos/1
+Content-Type: application/json
+Authorization: Bearer TU_TOKEN
+
+{
+    "observaciones": "Paciente presenta mejoría.",
+    "estado": "cerrado"
+}
+
+###
+
+### Eliminar seguimiento
+DELETE http://localhost:8003/seguimientos/1
+Authorization: Bearer TU_TOKEN
