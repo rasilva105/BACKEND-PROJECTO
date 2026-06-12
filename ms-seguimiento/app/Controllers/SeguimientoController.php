@@ -8,6 +8,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class SeguimientoController
 {
+    // GET /seguimientos
     public function index(Request $request, Response $response): Response
     {
         $response->getBody()->write(
@@ -20,6 +21,7 @@ class SeguimientoController
         );
     }
 
+    // GET /seguimientos/{id}
     public function show(Request $request, Response $response, array $args): Response
     {
         $seguimiento = Seguimiento::find($args['id']);
@@ -44,17 +46,18 @@ class SeguimientoController
         );
     }
 
+    // POST /seguimientos
     public function store(Request $request, Response $response): Response
     {
         $data = $request->getParsedBody();
 
         $seguimiento = Seguimiento::create([
-            'incapacidad_id'     => $data['incapacidad_id'],
-            'fecha_seguimiento'  => $data['fecha_seguimiento'],
-            'observaciones'      => $data['observaciones'],
-            'recomendaciones'    => $data['recomendaciones'],
-            'proxima_revision'   => $data['proxima_revision'],
-            'estado'             => $data['estado'] ?? 'activo'
+            'incapacidad_id'    => $data['incapacidad_id'],
+            'fecha_seguimiento' => $data['fecha_seguimiento'],
+            'observaciones'     => $data['observaciones'],
+            'recomendaciones'   => $data['recomendaciones'] ?? null,
+            'proxima_revision'  => $data['proxima_revision'] ?? null,
+            'estado'            => $data['estado'] ?? 'pendiente'
         ]);
 
         $response->getBody()->write(
@@ -66,6 +69,7 @@ class SeguimientoController
             ->withHeader('Content-Type', 'application/json');
     }
 
+    // PUT /seguimientos/{id}
     public function update(Request $request, Response $response, array $args): Response
     {
         $seguimiento = Seguimiento::find($args['id']);
@@ -80,12 +84,19 @@ class SeguimientoController
                 ->withHeader('Content-Type', 'application/json');
         }
 
-        $seguimiento->update(
-            $request->getParsedBody()
-        );
+        $data = $request->getParsedBody();
+
+        $seguimiento->update([
+            'incapacidad_id'    => $data['incapacidad_id'],
+            'fecha_seguimiento' => $data['fecha_seguimiento'],
+            'observaciones'     => $data['observaciones'],
+            'recomendaciones'   => $data['recomendaciones'] ?? null,
+            'proxima_revision'  => $data['proxima_revision'] ?? null,
+            'estado'            => $data['estado']
+        ]);
 
         $response->getBody()->write(
-            $seguimiento->toJson()
+            $seguimiento->fresh()->toJson()
         );
 
         return $response->withHeader(
@@ -94,6 +105,7 @@ class SeguimientoController
         );
     }
 
+    // DELETE /seguimientos/{id}
     public function destroy(Request $request, Response $response, array $args): Response
     {
         $seguimiento = Seguimiento::find($args['id']);
@@ -108,11 +120,10 @@ class SeguimientoController
                 ->withHeader('Content-Type', 'application/json');
         }
 
-        $seguimiento->estado = 'inactivo';
-        $seguimiento->save();
+        $seguimiento->delete();
 
         $response->getBody()->write(json_encode([
-            'mensaje' => 'Seguimiento desactivado'
+            'mensaje' => 'Seguimiento eliminado correctamente'
         ]));
 
         return $response->withHeader(
