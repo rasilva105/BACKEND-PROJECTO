@@ -1,23 +1,30 @@
 <?php
 
-namespace Incapacidades\Controllers;
+namespace App\Controllers;
 
-use Incapacidades\Models\Incapacidad;
+use App\Models\Incapacidad;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 class IncapacidadController
 {
-    public function listar(Request $request, Response $response)
+    // GET /incapacidades
+    public function index(Request $request, Response $response): Response
     {
+        $incapacidades = Incapacidad::all();
+
         $response->getBody()->write(
-            Incapacidad::all()->toJson()
+            $incapacidades->toJson()
         );
 
-        return $response->withHeader('Content-Type', 'application/json');
+        return $response->withHeader(
+            'Content-Type',
+            'application/json'
+        );
     }
 
-    public function obtener(Request $request, Response $response, array $args)
+    // GET /incapacidades/{id}
+    public function show(Request $request, Response $response, array $args): Response
     {
         $incapacidad = Incapacidad::find($args['id']);
 
@@ -26,126 +33,155 @@ class IncapacidadController
                 'mensaje' => 'Incapacidad no encontrada'
             ]));
 
-            return $response->withStatus(404);
+            return $response
+                ->withStatus(404)
+                ->withHeader('Content-Type', 'application/json');
         }
 
-        $response->getBody()->write($incapacidad->toJson());
+        $response->getBody()->write(
+            $incapacidad->toJson()
+        );
 
-        return $response->withHeader('Content-Type', 'application/json');
+        return $response->withHeader(
+            'Content-Type',
+            'application/json'
+        );
     }
 
-    public function crear(Request $request, Response $response)
+    // POST /incapacidades
+    public function crear(Request $request, Response $response): Response
     {
         $data = $request->getParsedBody();
 
-        if (strtotime($data['fecha_fin']) < strtotime($data['fecha_inicio'])) {
+        $incapacidad = Incapacidad::create([
+            'empleado_id' => $data['empleado_id'],
+            'fecha_inicio' => $data['fecha_inicio'],
+            'fecha_fin' => $data['fecha_fin'],
+            'tipo' => $data['tipo'],
+            'diagnostico_general' => $data['diagnostico_general'],
+            'entidad_medica' => $data['entidad_medica'],
+            'observaciones' => $data['observaciones'],
+            'estado' => $data['estado'] ?? 'activa'
+        ]);
 
-            $response->getBody()->write(json_encode([
-                'mensaje' => 'La fecha fin no puede ser menor que la fecha inicio'
-            ]));
-
-            return $response->withStatus(400);
-        }
-
-        $dias = floor(
-            (strtotime($data['fecha_fin']) -
-            strtotime($data['fecha_inicio'])) / 86400
-        ) + 1;
-
-        $duplicada = Incapacidad::where('empleado_id', $data['empleado_id'])
-            ->where('fecha_inicio', $data['fecha_inicio'])
-            ->where('fecha_fin', $data['fecha_fin'])
-            ->exists();
-
-        if ($duplicada) {
-
-            $response->getBody()->write(json_encode([
-                'mensaje' => 'Ya existe una incapacidad con ese rango de fechas'
-            ]));
-
-            return $response->withStatus(409);
-        }
-
-        $data['dias_incapacidad'] = $dias;
-
-        $incapacidad = Incapacidad::create($data);
-
-        $response->getBody()->write($incapacidad->toJson());
+        $response->getBody()->write(
+            $incapacidad->toJson()
+        );
 
         return $response
             ->withStatus(201)
             ->withHeader('Content-Type', 'application/json');
     }
 
-    public function actualizar(Request $request, Response $response, array $args)
+    // PUT /incapacidades/{id}
+    public function actualizar(Request $request, Response $response, array $args): Response
     {
         $incapacidad = Incapacidad::find($args['id']);
 
         if (!$incapacidad) {
-
             $response->getBody()->write(json_encode([
                 'mensaje' => 'Incapacidad no encontrada'
             ]));
 
-            return $response->withStatus(404);
+            return $response
+                ->withStatus(404)
+                ->withHeader('Content-Type', 'application/json');
         }
 
-        $data = $request->getParsedBody();
+        $incapacidad->update(
+            $request->getParsedBody()
+        );
 
-        $incapacidad->update($data);
+        $response->getBody()->write(
+            $incapacidad->toJson()
+        );
 
-        $response->getBody()->write($incapacidad->fresh()->toJson());
-
-        return $response->withHeader('Content-Type', 'application/json');
+        return $response->withHeader(
+            'Content-Type',
+            'application/json'
+        );
     }
 
-    public function eliminar(Request $request, Response $response, array $args)
+    // DELETE /incapacidades/{id}
+    public function eliminar(Request $request, Response $response, array $args): Response
     {
         $incapacidad = Incapacidad::find($args['id']);
 
         if (!$incapacidad) {
-
             $response->getBody()->write(json_encode([
                 'mensaje' => 'Incapacidad no encontrada'
             ]));
 
-            return $response->withStatus(404);
+            return $response
+                ->withStatus(404)
+                ->withHeader('Content-Type', 'application/json');
         }
 
-        $incapacidad->estado = 'finalizada';
+        // Eliminación lógica
+        $incapacidad->estado = 'inactiva';
         $incapacidad->save();
 
         $response->getBody()->write(json_encode([
             'mensaje' => 'Incapacidad finalizada correctamente'
         ]));
 
-        return $response;
+        return $response->withHeader(
+            'Content-Type',
+            'application/json'
+        );
     }
 
-    public function buscarPorEmpleado(Request $request, Response $response, array $args)
+    // GET /incapacidades/empleado/{id}
+    public function buscarPorEmpleado(Request $request, Response $response, array $args): Response
     {
+        $incapacidades = Incapacidad::where(
+            'empleado_id',
+            $args['id']
+        )->get();
+
         $response->getBody()->write(
-            Incapacidad::where('empleado_id', $args['id'])->get()->toJson()
+            $incapacidades->toJson()
         );
 
-        return $response->withHeader('Content-Type', 'application/json');
+        return $response->withHeader(
+            'Content-Type',
+            'application/json'
+        );
     }
 
-    public function buscarPorEstado(Request $request, Response $response, array $args)
+    // GET /incapacidades/estado/{estado}
+    public function buscarPorEstado(Request $request, Response $response, array $args): Response
     {
+        $incapacidades = Incapacidad::where(
+            'estado',
+            $args['estado']
+        )->get();
+
         $response->getBody()->write(
-            Incapacidad::where('estado', $args['estado'])->get()->toJson()
+            $incapacidades->toJson()
         );
 
-        return $response->withHeader('Content-Type', 'application/json');
+        return $response->withHeader(
+            'Content-Type',
+            'application/json'
+        );
     }
 
-    public function buscarPorTipo(Request $request, Response $response, array $args)
+    // GET /incapacidades/tipo/{tipo}
+    public function buscarPorTipo(Request $request, Response $response, array $args): Response
     {
+        $incapacidades = Incapacidad::where(
+            'tipo',
+            urldecode($args['tipo'])
+        )->get();
+
         $response->getBody()->write(
-            Incapacidad::where('tipo', $args['tipo'])->get()->toJson()
+            $incapacidades->toJson()
         );
 
-        return $response->withHeader('Content-Type', 'application/json');
+        return $response->withHeader(
+            'Content-Type',
+            'application/json'
+        );
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Incapacidades\Models;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,7 +16,8 @@ class Incapacidad extends Model
         'diagnostico_general',
         'entidad_medica',
         'observaciones',
-        'dias_incapacidad',
         'estado'
     ];
+
+    public $timestamps = true;
 }

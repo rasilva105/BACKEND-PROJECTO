@@ -1,32 +1,34 @@
 <?php
 
 use Slim\App;
-use Incapacidades\Controllers\IncapacidadController;
-use Incapacidades\Middleware\AuthMiddleware;
+use App\Controllers\IncapacidadController;
+use App\Middleware\AuthMiddleware;
 
 return function (App $app) {
 
-    $app->get('/incapacidades', [IncapacidadController::class, 'listar'])
+    $controller = new IncapacidadController();
+
+    $app->get('/incapacidades', [$controller, 'index'])
         ->add(new AuthMiddleware());
 
-    $app->get('/incapacidades/{id}', [IncapacidadController::class, 'obtener'])
+    $app->get('/incapacidades/{id}', [$controller, 'show'])
         ->add(new AuthMiddleware());
 
-    $app->post('/incapacidades', [IncapacidadController::class, 'crear'])
+    $app->post('/incapacidades', [$controller, 'crear'])
         ->add(new AuthMiddleware());
 
-    $app->put('/incapacidades/{id}', [IncapacidadController::class, 'actualizar'])
+    $app->put('/incapacidades/{id}', [$controller, 'actualizar'])
         ->add(new AuthMiddleware());
 
-    $app->delete('/incapacidades/{id}', [IncapacidadController::class, 'eliminar'])
+    $app->delete('/incapacidades/{id}', [$controller, 'eliminar'])
         ->add(new AuthMiddleware());
 
-    $app->get('/incapacidades/empleado/{id}', [IncapacidadController::class, 'buscarPorEmpleado'])
+    $app->get('/incapacidades/empleado/{id}', [$controller, 'buscarPorEmpleado'])
         ->add(new AuthMiddleware());
 
-    $app->get('/incapacidades/estado/{estado}', [IncapacidadController::class, 'buscarPorEstado'])
+    $app->get('/incapacidades/estado/{estado}', [$controller, 'buscarPorEstado'])
         ->add(new AuthMiddleware());
 
-    $app->get('/incapacidades/tipo/{tipo}', [IncapacidadController::class, 'buscarPorTipo'])
+    $app->get('/incapacidades/tipo/{tipo}', [$controller, 'buscarPorTipo'])
         ->add(new AuthMiddleware());
 };
