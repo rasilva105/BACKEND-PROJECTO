@@ -118,7 +118,7 @@ class IncapacidadController
         }
 
         // Eliminación lógica
-        $incapacidad->estado = 'inactiva';
+        $incapacidad->estado = 'finalizada';
         $incapacidad->save();
 
         $response->getBody()->write(json_encode([
