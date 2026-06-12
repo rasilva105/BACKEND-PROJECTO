@@ -57,7 +57,7 @@ Authorization: prueba
 # ACTUALIZAR EMPLEADO
 ##################################################
 
-PUT http://localhost:8001/empleados/6
+PUT http://localhost:8001/empleados/7
 Content-Type: application/json
 Authorization: prueba
 
