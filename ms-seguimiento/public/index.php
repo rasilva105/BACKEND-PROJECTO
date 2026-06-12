@@ -1,6 +1,15 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require __DIR__ . '/../vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(
+    dirname(__DIR__)
+);
+
+$dotenv->load();
 
 require __DIR__ . '/../app/Config/database.php';
 
@@ -10,13 +19,13 @@ $app = AppFactory::create();
 
 $app->addBodyParsingMiddleware();
 
-$routes = require __DIR__ . '/../app/Routes/seguimientoRoutes.php';
-$routes($app);
+$app->addErrorMiddleware(true, true, true);
 
 $app->get('/', function ($request, $response) {
 
     $response->getBody()->write(json_encode([
-        "mensaje" => "ms-seguimiento funcionando"
+        'microservicio' => 'ms-seguimiento',
+        'estado' => 'funcionando'
     ]));
 
     return $response->withHeader(
@@ -24,5 +33,9 @@ $app->get('/', function ($request, $response) {
         'application/json'
     );
 });
+
+$routes = require __DIR__ . '/../app/Routes/seguimientoRoutes.php';
+
+$routes($app);
 
 $app->run();

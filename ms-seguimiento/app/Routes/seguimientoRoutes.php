@@ -1,23 +1,25 @@
 <?php
 
 use Slim\App;
-use Seguimiento\Controllers\SeguimientoController;
-use Seguimiento\Middleware\AuthMiddleware;
+use App\Controllers\SeguimientoController;
+use App\Middleware\AuthMiddleware;
 
 return function (App $app) {
 
-    $app->get('/seguimientos', SeguimientoController::class . ':index')
+    $controller = new SeguimientoController();
+
+    $app->get('/seguimientos', [$controller, 'index'])
         ->add(new AuthMiddleware());
 
-    $app->get('/seguimientos/{id}', SeguimientoController::class . ':show')
+    $app->get('/seguimientos/{id}', [$controller, 'show'])
         ->add(new AuthMiddleware());
 
-    $app->post('/seguimientos', SeguimientoController::class . ':store')
+    $app->post('/seguimientos', [$controller, 'store'])
         ->add(new AuthMiddleware());
 
-    $app->put('/seguimientos/{id}', SeguimientoController::class . ':update')
+    $app->put('/seguimientos/{id}', [$controller, 'update'])
         ->add(new AuthMiddleware());
 
-    $app->delete('/seguimientos/{id}', SeguimientoController::class . ':destroy')
+    $app->delete('/seguimientos/{id}', [$controller, 'destroy'])
         ->add(new AuthMiddleware());
 };

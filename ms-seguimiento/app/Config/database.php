@@ -2,23 +2,20 @@
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 
-
-// Conexión a la base de datos bd_seguimiento
-
-
 $capsule = new Capsule();
 
 $capsule->addConnection([
     'driver'    => 'mysql',
-    'host'      => 'localhost',
-    'port'      => 3306,
-    'database'  => 'bd_seguimiento',
-    'username'  => 'root',
-    'password'  => '',
+    'host'      => $_ENV['DB_HOST'],
+    'port'      => $_ENV['DB_PORT'],
+    'database'  => $_ENV['DB_DATABASE'],
+    'username'  => $_ENV['DB_USERNAME'],
+    'password'  => $_ENV['DB_PASSWORD'],
     'charset'   => 'utf8mb4',
     'collation' => 'utf8mb4_unicode_ci',
-    'prefix'    => ''
+    'prefix'    => '',
 ]);
 
 $capsule->setAsGlobal();
+
 $capsule->bootEloquent();
