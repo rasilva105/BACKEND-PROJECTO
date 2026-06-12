@@ -1,17 +1,19 @@
 <?php
 
-namespace Empleados\Controllers;
+namespace App\Controllers;
 
-use Empleados\Models\Empleado;
+use App\Models\Empleado;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 class EmpleadoController
 {
-    public function listar(Request $request, Response $response)
+    public function index(Request $request, Response $response): Response
     {
+        $empleados = Empleado::all();
+
         $response->getBody()->write(
-            Empleado::all()->toJson()
+            $empleados->toJson()
         );
 
         return $response->withHeader(
@@ -20,7 +22,7 @@ class EmpleadoController
         );
     }
 
-    public function obtener(Request $request, Response $response, array $args)
+    public function show(Request $request, Response $response, array $args): Response
     {
         $empleado = Empleado::find($args['id']);
 
@@ -29,10 +31,14 @@ class EmpleadoController
                 'mensaje' => 'Empleado no encontrado'
             ]));
 
-            return $response->withStatus(404);
+            return $response
+                ->withStatus(404)
+                ->withHeader('Content-Type', 'application/json');
         }
 
-        $response->getBody()->write($empleado->toJson());
+        $response->getBody()->write(
+            $empleado->toJson()
+        );
 
         return $response->withHeader(
             'Content-Type',
@@ -40,27 +46,43 @@ class EmpleadoController
         );
     }
 
-    public function crear(Request $request, Response $response)
+    public function crear(Request $request, Response $response): Response
     {
         $data = $request->getParsedBody();
 
-        $empleado = Empleado::create($data);
+        $empleado = Empleado::create([
+            'nombres' => $data['nombres'],
+            'apellidos' => $data['apellidos'],
+            'documento' => $data['documento'],
+            'correo' => $data['correo'],
+            'telefono' => $data['telefono'],
+            'cargo' => $data['cargo'],
+            'area' => $data['area'],
+            'fecha_ingreso' => $data['fecha_ingreso'],
+            'estado' => $data['estado'] ?? 'activo'
+        ]);
 
         $response->getBody()->write(
             $empleado->toJson()
         );
 
         return $response
-            ->withHeader('Content-Type', 'application/json')
-            ->withStatus(201);
+            ->withStatus(201)
+            ->withHeader('Content-Type', 'application/json');
     }
 
-    public function actualizar(Request $request, Response $response, array $args)
+    public function actualizar(Request $request, Response $response, array $args): Response
     {
         $empleado = Empleado::find($args['id']);
 
         if (!$empleado) {
-            return $response->withStatus(404);
+            $response->getBody()->write(json_encode([
+                'mensaje' => 'Empleado no encontrado'
+            ]));
+
+            return $response
+                ->withStatus(404)
+                ->withHeader('Content-Type', 'application/json');
         }
 
         $empleado->update(
@@ -77,18 +99,30 @@ class EmpleadoController
         );
     }
 
-    public function eliminar(Request $request, Response $response, array $args)
+    public function eliminar(Request $request, Response $response, array $args): Response
     {
         $empleado = Empleado::find($args['id']);
 
         if (!$empleado) {
-            return $response->withStatus(404);
+            $response->getBody()->write(json_encode([
+                'mensaje' => 'Empleado no encontrado'
+            ]));
+
+            return $response
+                ->withStatus(404)
+                ->withHeader('Content-Type', 'application/json');
         }
 
-        $empleado->delete();
+        /*
+         * Cambio importante:
+         * NO elimina físicamente el registro.
+         */
+
+        $empleado->estado = 'inactivo';
+        $empleado->save();
 
         $response->getBody()->write(json_encode([
-            'mensaje' => 'Empleado eliminado'
+            'mensaje' => 'Empleado desactivado correctamente'
         ]));
 
         return $response->withHeader(

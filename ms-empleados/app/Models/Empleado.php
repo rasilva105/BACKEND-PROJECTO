@@ -1,6 +1,6 @@
 <?php
 
-namespace Empleados\Models;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,4 +19,6 @@ class Empleado extends Model
         'fecha_ingreso',
         'estado'
     ];
+
+    public $timestamps = true;
 }

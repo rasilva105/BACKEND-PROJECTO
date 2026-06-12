@@ -1,23 +1,25 @@
 <?php
 
 use Slim\App;
-use Empleados\Controllers\EmpleadoController;
-use Empleados\Middleware\AuthMiddleware;
+use App\Controllers\EmpleadoController;
+use App\Middleware\AuthMiddleware;
 
 return function (App $app) {
 
-    $app->get('/empleados', [EmpleadoController::class, 'listar'])
+    $controller = new EmpleadoController();
+
+    $app->get('/empleados', [$controller, 'index'])
         ->add(new AuthMiddleware());
 
-    $app->get('/empleados/{id}', [EmpleadoController::class, 'obtener'])
+    $app->get('/empleados/{id}', [$controller, 'show'])
         ->add(new AuthMiddleware());
 
-    $app->post('/empleados', [EmpleadoController::class, 'crear'])
+    $app->post('/empleados', [$controller, 'crear'])
         ->add(new AuthMiddleware());
 
-    $app->put('/empleados/{id}', [EmpleadoController::class, 'actualizar'])
+    $app->put('/empleados/{id}', [$controller, 'actualizar'])
         ->add(new AuthMiddleware());
 
-    $app->delete('/empleados/{id}', [EmpleadoController::class, 'eliminar'])
+    $app->delete('/empleados/{id}', [$controller, 'eliminar'])
         ->add(new AuthMiddleware());
 };

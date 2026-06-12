@@ -1,6 +1,13 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require __DIR__ . '/../vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
+
 require __DIR__ . '/../app/Config/database.php';
 
 use Slim\Factory\AppFactory;
@@ -9,9 +16,8 @@ $app = AppFactory::create();
 
 $app->addBodyParsingMiddleware();
 
-/*
-Ruta principal
-*/
+$app->addErrorMiddleware(true, true, true);
+
 $app->get('/', function ($request, $response) {
 
     $response->getBody()->write(json_encode([
@@ -19,15 +25,14 @@ $app->get('/', function ($request, $response) {
         'estado' => 'funcionando'
     ]));
 
-    return $response
-        ->withHeader('Content-Type', 'application/json');
+    return $response->withHeader(
+        'Content-Type',
+        'application/json'
+    );
 });
 
-/*
-|--------------------------------------------------------------------------
-| Registrar rutas del microservicio
-|--------------------------------------------------------------------------
-*/
-(require __DIR__ . '/../app/Routes/empleadoRoutes.php')($app);
+$routes = require __DIR__ . '/../app/Routes/empleadoRoutes.php';
+
+$routes($app);
 
 $app->run();
