@@ -27,7 +27,7 @@ Authorization: Bearer TU_TOKEN
 ###
 
 ### Actualizar seguimiento
-PUT http://localhost:8003/seguimientos/1
+PUT http://localhost:8003/seguimientos/2
 Content-Type: application/json
 Authorization: Bearer TU_TOKEN
 
@@ -39,5 +39,5 @@ Authorization: Bearer TU_TOKEN
 ###
 
 ### Eliminar seguimiento
-DELETE http://localhost:8003/seguimientos/1
+DELETE http://localhost:8003/seguimientos/2
 Authorization: Bearer TU_TOKEN
