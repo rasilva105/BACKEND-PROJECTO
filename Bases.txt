@@ -1,0 +1,246 @@
+
+/* ==========================================
+  BASE DE DATOS AUTH
+========================================== */
+
+DROP DATABASE IF EXISTS bd_auth;
+CREATE DATABASE bd_auth;
+USE bd_auth;
+
+CREATE TABLE usuarios (
+   id BIGINT AUTO_INCREMENT PRIMARY KEY,
+   nombre VARCHAR(100) NOT NULL,
+   usuario VARCHAR(50) NOT NULL UNIQUE,
+   correo VARCHAR(100) NOT NULL UNIQUE,
+   contrasena VARCHAR(255) NOT NULL,
+   rol ENUM('admin','medico','rrhh') DEFAULT 'rrhh',
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+INSERT INTO usuarios (
+   nombre,
+   usuario,
+   correo,
+   contrasena,
+   rol
+)
+VALUES (
+   'Administrador',
+   'admin',
+   'admin@empresa.com',
+   '123456',
+   'admin'
+);
+
+
+/* ==========================================
+  BASE DE DATOS EMPLEADOS
+========================================== */
+
+DROP DATABASE IF EXISTS bd_empleados;
+CREATE DATABASE bd_empleados;
+USE bd_empleados;
+
+CREATE TABLE empleados (
+   id BIGINT AUTO_INCREMENT PRIMARY KEY,
+   documento VARCHAR(20) NOT NULL UNIQUE,
+   nombre VARCHAR(100) NOT NULL,
+   apellido VARCHAR(100) NOT NULL,
+   correo VARCHAR(100),
+   telefono VARCHAR(20),
+   cargo VARCHAR(100),
+   area VARCHAR(100),
+   estado ENUM('activo','inactivo') DEFAULT 'activo',
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+INSERT INTO empleados (
+   documento,
+   nombre,
+   apellido,
+   correo,
+   telefono,
+   cargo,
+   area
+)
+VALUES
+(
+   '10000001',
+   'Juan',
+   'Perez',
+   'juan@empresa.com',
+   '3001111111',
+   'Ingeniero',
+   'Sistemas'
+),
+(
+   '10000002',
+   'Maria',
+   'Gomez',
+   'maria@empresa.com',
+   '3002222222',
+   'Analista',
+   'RRHH'
+);
+
+
+/* ==========================================
+  BASE DE DATOS INCAPACIDADES
+========================================== */
+
+DROP DATABASE IF EXISTS bd_incapacidades;
+CREATE DATABASE bd_incapacidades;
+USE bd_incapacidades;
+
+CREATE TABLE incapacidades (
+   id BIGINT AUTO_INCREMENT PRIMARY KEY,
+   empleado_id BIGINT NOT NULL,
+   fecha_inicio DATE NOT NULL,
+   fecha_fin DATE NOT NULL,
+   dias INT NOT NULL,
+   diagnostico TEXT,
+   entidad_medica VARCHAR(150),
+   estado ENUM(
+       'registrada',
+       'aprobada',
+       'rechazada',
+       'finalizada'
+   ) DEFAULT 'registrada',
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+INSERT INTO incapacidades (
+   empleado_id,
+   fecha_inicio,
+   fecha_fin,
+   dias,
+   diagnostico,
+   entidad_medica,
+   estado
+)
+VALUES
+(
+   1,
+   '2026-06-01',
+   '2026-06-10',
+   10,
+   'Lesión lumbar',
+   'EPS Sanitas',
+   'registrada'
+),
+(
+   2,
+   '2026-06-05',
+   '2026-06-12',
+   7,
+   'Infección respiratoria',
+   'Nueva EPS',
+   'aprobada'
+),
+(
+   1,
+   '2026-06-15',
+   '2026-06-20',
+   5,
+   'Esguince de tobillo',
+   'Sura',
+   'registrada'
+),
+(
+   2,
+   '2026-06-18',
+   '2026-06-25',
+   8,
+   'Migraña severa',
+   'EPS Sanitas',
+   'finalizada'
+);
+
+
+/* ==========================================
+  BASE DE DATOS SEGUIMIENTO
+========================================== */
+
+DROP DATABASE IF EXISTS bd_seguimiento;
+CREATE DATABASE bd_seguimiento;
+USE bd_seguimiento;
+
+CREATE TABLE seguimientos (
+   id BIGINT AUTO_INCREMENT PRIMARY KEY,
+   incapacidad_id BIGINT NOT NULL,
+   fecha_seguimiento DATE NOT NULL,
+   observaciones TEXT NOT NULL,
+   recomendaciones TEXT,
+   proxima_revision DATE,
+   estado ENUM(
+       'pendiente',
+       'en_revision',
+       'aprobada',
+       'rechazada',
+       'finalizada'
+   ) DEFAULT 'pendiente',
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+INSERT INTO seguimientos (
+   incapacidad_id,
+   fecha_seguimiento,
+   observaciones,
+   recomendaciones,
+   proxima_revision,
+   estado
+)
+VALUES
+(
+   1,
+   '2026-06-02',
+   'Paciente estable, presenta mejoría.',
+   'Continuar reposo y medicación.',
+   '2026-06-10',
+   'aprobada'
+),
+(
+   1,
+   '2026-06-08',
+   'Evolución favorable.',
+   'Mantener tratamiento.',
+   '2026-06-15',
+   'en_revision'
+),
+(
+   2,
+   '2026-06-06',
+   'Persisten síntomas respiratorios.',
+   'Control médico en 3 días.',
+   '2026-06-09',
+   'pendiente'
+),
+(
+   2,
+   '2026-06-12',
+   'Recuperación satisfactoria.',
+   'Finalizar incapacidad.',
+   NULL,
+   'finalizada'
+),
+(
+   3,
+   '2026-06-16',
+   'Inflamación reducida.',
+   'Iniciar ejercicios suaves.',
+   '2026-06-20',
+   'en_revision'
+),
+(
+   4,
+   '2026-06-19',
+   'Dolor de cabeza disminuyó.',
+   'Continuar tratamiento.',
+   '2026-06-25',
+   'aprobada'
+);
+
